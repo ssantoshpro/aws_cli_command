@@ -20,4 +20,4 @@ cat cmd_list.txt | while read bucket_path; do
 done
 
 # Upload the output file to S3
-aws s3 cp "AWS_Count_Log.txt" "s3://pocbucket06032023/output.txt"
+aws s3 cp "AWS_Count_Log.txt" "s3://pocbucket06032023/AWS_Count_Log.txt"
