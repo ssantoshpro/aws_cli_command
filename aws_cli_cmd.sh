@@ -14,9 +14,16 @@ aws s3 cp "s3://pocbucket06032023/cmd_list.txt" .
 # to run each line 
 cat cmd_list.txt | while read bucket_path; do
 	fname=$(echo $bucket_path | sed -e 's/\r//g')
-	COUNT=$(aws s3 cp s3://"$fname" - | wc -l)
-	echo "$fname has $COUNT lines"
-	echo "$fname has $COUNT lines" >> AWS_Count_Log.txt
+	val=$(aws s3 cp s3://"$fname" - | grep -a -o "HEADER" | head -c -1)
+	if [ "$val" = "HEADER" ]; then
+		COUNT=$(aws s3 cp s3://"$fname" - | wc -l)
+		echo "$fname has $((COUNT-2)) lines"
+		echo "$fname has $((COUNT-2)) lines" >> AWS_Count_Log.txt
+	else
+	    COUNT=$(aws s3 cp s3://"$fname" - | wc -l)
+		echo "$fname has $COUNT lines"
+		echo "$fname has $COUNT lines" >> AWS_Count_Log.txt
+	fi
 done
 
 # Upload the output file to S3
