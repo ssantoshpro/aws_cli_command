@@ -9,14 +9,15 @@ else
 fi
 
 # to download it in E2C
-aws s3 cp "s3://pocbucket06032023/cmd_list.txt" .
+#aws s3 cp "s3://pocbucket06032023/cmd_list.txt" .
+aws s3 cp "s3://bucket-for-count/cmd_list.txt" .
 
 # to run each line 
 cat cmd_list.txt | while read bucket_path; do
 	fname=$(echo $bucket_path | sed -e 's/\r//g')
-	val=$(aws s3 cp s3://"$fname" - | grep -a -o "HEADER" | head -c -1)
-	if [ "$val" = "HEADER" ]; then
-		COUNT=$(aws s3 cp s3://"$fname" - | wc -l)
+	val=$(aws s3 cp s3://"$fname" - | grep -a -o "TRAILER" | head -c -1)
+	if [ "$val" = "TRAILER" ]; then
+		COUNT=$(aws s3 cp s3://"$fname" - | grep -n 'TRAILER'| cut -d':' -f1 )
 		echo "$fname has $((COUNT-2)) lines"
 		echo "$fname has $((COUNT-2)) lines" >> AWS_Count_Log.txt
 	else
@@ -24,6 +25,7 @@ cat cmd_list.txt | while read bucket_path; do
 		echo "$fname has $COUNT lines"
 		echo "$fname has $COUNT lines" >> AWS_Count_Log.txt
 	fi
+	
 done
 
 # Upload the output file to S3
