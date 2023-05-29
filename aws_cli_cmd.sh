@@ -9,8 +9,7 @@ else
 fi
 
 # to download it in E2C
-#aws s3 cp "s3://pocbucket06032023/cmd_list.txt" .
-aws s3 cp "s3://bucket-for-count/cmd_list.txt" .
+aws s3 cp "s3://pocbucket06032023/cmd_list.txt" .
 
 # to run each line 
 cat cmd_list.txt | while read bucket_path; do
@@ -25,7 +24,6 @@ cat cmd_list.txt | while read bucket_path; do
 		echo "$fname has $COUNT lines"
 		echo "$fname has $COUNT lines" >> AWS_Count_Log.txt
 	fi
-	
 done
 
 # Upload the output file to S3
