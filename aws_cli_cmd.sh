@@ -8,6 +8,14 @@ else
   rm 'AWS_Count_Log.txt'
 fi
 
+if [ ! -f 'Trailer_Deatil.txt' ]
+then
+  echo "No existing Trailer_Deatil.txt file. 
+  Proceeding Next Step ->"
+else
+  rm 'Trailer_Deatil.txt'
+fi
+
 # to download it in E2C
 aws s3 cp "s3://pocbucket06032023/cmd_list.txt" .
 
