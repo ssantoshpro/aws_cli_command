@@ -19,6 +19,7 @@ cat cmd_list.txt | while read bucket_path; do
 		COUNT=$(aws s3 cp s3://"$fname" - | grep -n 'TRAILER'| cut -d':' -f1 )
 		echo "$fname has $((COUNT-2)) lines"
 		echo "$fname has $((COUNT-2)) lines" >> AWS_Count_Log.txt
+		echo $(aws s3 cp s3://"$fname" - | grep 'TRAILER' ) >> Trailer_Deatil.txt
 	else
 	    COUNT=$(aws s3 cp s3://"$fname" - | wc -l)
 		echo "$fname has $COUNT lines"
@@ -26,5 +27,7 @@ cat cmd_list.txt | while read bucket_path; do
 	fi
 done
 
-# Upload the output file to S3
-aws s3 cp "AWS_Count_Log.txt" "s3://pocbucket06032023/AWS_Count_Log.txt"
+# Upload the AWS_Count_Log file to S3
+aws s3 cp "AWS_Count_Log.txt" "s3://pocbucket06032023/"
+# Upload the Trailer_Deatil file to S3
+aws s3 cp "Trailer_Deatil.txt" "s3://pocbucket06032023/"
